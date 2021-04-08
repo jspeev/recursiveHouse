@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   count$: Observable<number>;
   cards: CardView[];
-  filterName: string = '';
+  filterName = '';
 
   constructor(private appService: AppService,
               private store: Store<{ count: number }>) {

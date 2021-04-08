@@ -14,8 +14,6 @@ const httpOptions = {
 })
 export class AppService {
 
-  private modelSubject = new BehaviorSubject<CardsView>({cards: []});
-
   private api: any = {
     baseURL: 'https://api.elderscrollslegends.io',
     version: 'v1',
