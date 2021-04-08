@@ -1,0 +1,31 @@
+.card {
+  display: inline-grid;
+}
+.cardContainer {
+  width: 250px;
+  border: 1px solid grey;
+  margin: 5px;
+  background-color: #F7F8FA;
+  border-radius: 5px;
+  display: block;
+  overflow: auto;
+
+}
+
+.cardImage {
+  height: 370px;
+}
+
+.cardName {
+  font-weight: bold;
+}
+
+.cardInfoPrimary {
+  padding: 5px;
+}
+
+.cardInfo {
+  border-top: 1px solid grey;
+  background-color: white;
+  margin-bottom: 5px;
+}

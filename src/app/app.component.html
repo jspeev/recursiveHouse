@@ -1,9 +1,21 @@
 <main>
-  <section class="card">
-    <div *ngFor="let card of (getModel() | async).cards">
-      <img [src]="card.imageURL" [alt]="card.name" />
+  <section>
+    <div class="card" *ngFor="let card of cards | slice : 0 : (count$ | async)">
+      <div class="cardContainer">
+        <img class="cardImage" [src]="card.imageURL" [alt]="card.name" />
+        <div class="cardInfoPrimary cardName">
+          {{card.name}}
+        </div>
+        <div class="cardInfoPrimary" *ngIf="card.text">
+          {{card.text}}
+        </div>
+        <div class="cardInfo cardInfoPrimary">
+          {{card.type}}
+        </div>
+        <div class="cardInfo cardInfoPrimary">
+          {{card.setName}}
+        </div>
+      </div>
     </div>
-  </section>
-  <section class="product-area">
   </section>
 </main>

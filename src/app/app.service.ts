@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {Card, CardsPayload, CardsView} from './model';
+import {Card, CardsPayload, CardsView, CardView} from './model';
 import * as _ from 'underscore';
 
 const httpOptions = {
@@ -14,21 +14,23 @@ const httpOptions = {
 })
 export class AppService {
 
+  private modelSubject = new BehaviorSubject<CardsView>({cards: []});
+
   private api: any = {
     baseURL: 'https://api.elderscrollslegends.io',
     version: 'v1',
-    cards: 'cards'
+    path: 'cards'
   };
 
   constructor(private http: HttpClient) { }
 
-  getCards(): Observable<CardsView> {
+  getCards(): Observable<CardView[]> {
 
-    const url = `${this.api.baseURL}/${this.api.version}/${this.api.cards}`;
+    const url = `${this.api.baseURL}/${this.api.version}/${this.api.path}`;
 
     return this.http.get(url, httpOptions).pipe(
       map((payload: CardsPayload) => {
-        return { cards : _.map(payload.cards, (card: Card) => {
+        return _.map(payload.cards, (card: Card) => {
           return {
             name: card.name,
             type: card.type,
@@ -36,7 +38,7 @@ export class AppService {
             imageURL: card.imageUrl,
             setName: card.set.name
           };
-        })};
+        });
       }),
       catchError((error: HttpErrorResponse) => {
         if (error.error instanceof ErrorEvent) {

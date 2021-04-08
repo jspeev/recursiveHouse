@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {AppService} from './app.service';
-import {CardsView} from './model';
-import {BehaviorSubject, Observable} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { AppService } from './app.service';
+import { CardView } from './model';
+import { Observable } from 'rxjs';
+import { increment } from './store/cards.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +12,27 @@ import {BehaviorSubject, Observable} from 'rxjs';
 })
 export class AppComponent implements OnInit {
 
-  private modelSubject = new BehaviorSubject<CardsView>({cards: []});
+  count$: Observable<number>;
+  cards: CardView[];
 
-  constructor(private appService: AppService) { }
+  constructor(private appService: AppService,
+              private store: Store<{ count: number }>) {
+    this.count$ = store.select('count');
+    this.appService.getCards().subscribe( (cards: CardView[]) => this.cards = cards);
+  }
 
   ngOnInit(): void {
-    this.appService.getCards().subscribe( (cards: CardsView) => {
-      this.modelNext(cards);
-    });
+    do{
+      this.store.dispatch(increment());
+    }while (document.body.scrollHeight < 0);
+
+    window.onscroll = () => {
+      const scrollHeight = document.body.scrollHeight;
+      const totalHeight = window.scrollY + window.innerHeight;
+      if (totalHeight >= scrollHeight) {
+        this.store.dispatch(increment());
+      }
+    };
   }
 
-  private modelNext(cards: CardsView): void {
-    this.modelSubject.next(cards);
-  }
-
-  getModel(): Observable<CardsView> {
-    return this.modelSubject.asObservable();
-  }
 }
