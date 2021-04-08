@@ -1,20 +1,21 @@
 <main>
+
+  <div class="searchBar">
+    <div class="searchInputContainer">
+      <input type="text" [(ngModel)]="filterName"/>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
   <section>
-    <div class="card" *ngFor="let card of cards | slice : 0 : (count$ | async)">
+    <div class="card" *ngFor="let card of cards | filter : filterName | slice : 0 : (count$ | async)">
       <div class="cardContainer">
         <img class="cardImage" [src]="card.imageURL" [alt]="card.name" />
-        <div class="cardInfoPrimary cardName">
-          {{card.name}}
-        </div>
-        <div class="cardInfoPrimary" *ngIf="card.text">
-          {{card.text}}
-        </div>
-        <div class="cardInfo cardInfoPrimary">
-          {{card.type}}
-        </div>
-        <div class="cardInfo cardInfoPrimary">
-          {{card.setName}}
-        </div>
+        <div class="cardInfoPrimary cardName">{{card.name}}</div>
+        <div class="cardInfoPrimary" *ngIf="card.text">{{card.text}}</div>
+        <div class="cardInfo cardInfoPrimary">{{card.type}}</div>
+        <div class="cardInfo cardInfoPrimary">{{card.setName}}</div>
       </div>
     </div>
   </section>

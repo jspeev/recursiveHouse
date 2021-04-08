@@ -14,17 +14,19 @@ export class AppComponent implements OnInit {
 
   count$: Observable<number>;
   cards: CardView[];
+  filterName: string = '';
 
   constructor(private appService: AppService,
               private store: Store<{ count: number }>) {
+
     this.count$ = store.select('count');
     this.appService.getCards().subscribe( (cards: CardView[]) => this.cards = cards);
+
   }
 
   ngOnInit(): void {
-    do{
-      this.store.dispatch(increment());
-    }while (document.body.scrollHeight < 0);
+
+    this.store.dispatch(increment());
 
     window.onscroll = () => {
       const scrollHeight = document.body.scrollHeight;
@@ -33,6 +35,7 @@ export class AppComponent implements OnInit {
         this.store.dispatch(increment());
       }
     };
+
   }
 
 }
